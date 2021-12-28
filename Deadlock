@@ -1,0 +1,12 @@
+#include <iostream>
+using namespace std;
+int min_res(int process, int need) {
+   int calculate = 0;
+   calculate = process * (need - 1) + 1;
+   return calculate;
+}
+int main() {
+   int process = 4, need = 2;
+   cout << "minimum required resources are : " <<min_res(process, need);
+   return 0;
+}
