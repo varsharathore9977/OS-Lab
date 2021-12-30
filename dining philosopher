@@ -1,0 +1,51 @@
+#include <iostream>
+#include <mutex>
+#include <thread>
+
+using namespace std;
+
+int main()
+{
+    const int no_of_philosophers = 6;
+
+    struct Fog
+    {
+    public:
+        Chopstics(){;}
+       mutex mu;
+    };
+
+    auto eat = [](Fog &left_fog, Fog& right_fog, int philosopher_number) {
+
+      unique_lock<mutex> llock(left_fog.mu);
+      unique_lock< mutex> rlock(right_fog.mu);
+
+        cout << "Philosopher " << philosopher_number << " is eating" << endl;
+
+        chrono::milliseconds timeout(1500);
+       this_thread::sleep_for(timeout);
+
+        cout << "Philosopher " << philosopher_number << " has finished eating" << endl;
+    };
+
+    
+    Fog fg[no_of_philosophers];
+
+   
+ thread philosopher[no_of_philosophers];
+
+   
+    cout << "Philosopher " << (0+1) << " is reading.." << endl;
+    philosopher[0] = thread(eat, ref(fg[0]), ref(fg[no_of_philosophers-1]), (0+1));
+
+    for(int i = 1; i < no_of_philosophers; ++i) {
+        cout << "Philosopher " << (i+1) << " is reading.." << endl;
+        philosopher[i] =thread(eat, ref(fg[i]), ref(fg[i-1]), (i+1));
+    }
+
+    for(auto &ph: philosopher) {
+        ph.join();
+    }
+
+    return 0;
+}
